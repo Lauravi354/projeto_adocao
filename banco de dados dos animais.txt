@@ -1,0 +1,1 @@
+[{nome: Mona, especie: Gato, raca: selvagem, idade: 5, estado_saude: Em tratamento, data_chegada: 10/11/2025, comportamento: Dócil}, {nome: Linda, especie: Cachorro, raca: Golden, idade: 3, estado_saude: saudável, data_chegada: 16/11/2025, comportamento: arisco}]
