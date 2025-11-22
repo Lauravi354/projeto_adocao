@@ -2,6 +2,7 @@ import ast
 import os
 
 animais=[]
+sugestao_personalizada = []
 ANIMALS_FILE = "banco de dados dos animais.txt"
 
 def mostrar_menu():
@@ -10,9 +11,10 @@ def mostrar_menu():
     print("2. Visualizar Animais")
     print("3. Editar Animal")
     print("4. Excluir Animal")
-    print("5. Módulo de cuidados e atividades") 
+    print("5. Módulo de cuidados e atividades")
+    print("6. Sugestões personalizadas") 
     print("0. Sair e Salvar")
-    return input("Escolha uma opção (0-5): ")
+    return input("Escolha uma opção (0-6): ")
 
 def dados_err(dado):
     if not dado:
@@ -65,6 +67,30 @@ def menu_animal():
     
     animais.append(animal)
     print(f"Animal '{nome}' adicionado com sucesso!")
+
+def sugestoes():
+    print("\n---Sugestões personalizadas---")
+    animal = str(input("Espécie (ex: Cachorro, Gato): ")).strip().lower()
+    cuidados_especiais = str(input("Estado de Saúde (ex: problema de pele, doença dentária ou saudável): ")).strip().lower()
+    comportamento = str(input("Comportamento (ex: Dócil, Arisco): ")).strip().lower()
+
+    if "cachorro" in animal:
+        print("\nSugestão de atividade: caminhadas, corridas e passeios ao ar livre.")
+
+    elif "gato" in animal:
+        print("\nSugestão de atividade: Brincadeiras com varinhas, ratinhos de brinquedo, laser points.")
+        
+    if "problema de pele" in cuidados_especiais:
+        print("Sugestão de cuidados especiais: Evitar banhos com produtos comuns, que podem irritar ainda mais a pele.")
+
+    elif "doença dentária" in cuidados_especiais:
+        print("Sugestão de cuidados especiais: oferecer brinquedos mastigáveis seguros específicos para limpeza dental ajudam a remover tártaro.")
+    
+    if "dócil" in comportamento:
+        print("Sugestão de adotantes: Famílias com crianças, pessoas idosas, pessoas que buscam companhia e lares com outros animais.")
+
+    elif "arisco" in comportamento:
+        print("Sugestão de adotantes: lares tranquilos, sem outros animais, muito barulho ou mudanças frequentes, e com pessoas que possuam experiência com pets ariscos.")
 
 def carregar_animais():
     if not os.path.exists(ANIMALS_FILE):
@@ -270,6 +296,8 @@ def main():
             excluir_animal()    
         elif opcao == '5':
             menu_cuidados()
+        elif opcao == '6':
+            sugestoes()
         elif opcao == '0':
             with open(ANIMALS_FILE,"w",encoding="utf8") as file:
                 for animal in animais:
