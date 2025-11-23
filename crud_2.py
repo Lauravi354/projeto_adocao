@@ -159,7 +159,7 @@ def cadastrar_cuidado():
     tarefas.append(nova_tarefa)
     print(f"\nTarefa '{descricao}' registrada para {animal_encontrado['nome']}.")
 
-def visualizar_tarefas(dias_faltando):
+def visualizar_tarefas():
     print("\n--- Visualizar Tarefas Pendentes ---")
     nome_alvo = input("Nome do animal para ver as tarefas: ")
     animal = buscar_animal_por_nome(nome_alvo) 
@@ -186,14 +186,8 @@ def visualizar_tarefas(dias_faltando):
         
 
     if "vacina" in tarefa["descricao"].lower():
-        if dias_faltando is None:
-            print(" Data inválida para calcular vacinação.")
-        elif dias_faltando > 0:
-            print(f" Dias para a próxima vacinação: {dias_faltando} dia(s)")
-        elif dias_faltando == 0:
-            print(" A vacinação é hoje!")
-        else:
-            print(" A data da vacinação já passou!")
+        alerta = contagem_regressiva_alertas(tarefa)
+        print(" ", alerta)
 
 def menu_cuidados():
     while True:
@@ -294,14 +288,22 @@ def excluir_animal():
     except ValueError:
         print("Entrada inválida. Por favor, digite um número.")
 
-def contagem_regressiva_alertas (dias_faltando):
+def contagem_regressiva_alertas (tarefa):
     hoje = datetime.now()
     
-    for tarefa in tarefas:
-        if "vacina" in tarefa["descricao"].lower():
-            data_prevista = datetime.strptime(tarefa['data_prevista'], "%d/%m/%Y")
-            dias_faltando = (data_prevista - hoje).days
-            return f"Dias que faltam para a próxima vacina: {dias_faltando} dias"
+    try:
+        data_prevista = datetime.strptime(tarefa['data_prevista'], "%d/%m/%Y")
+    except:
+        return "Data inválida para calcular vacinação."
+
+    dias_faltando = (data_prevista - hoje).days
+
+    if dias_faltando > 0:
+        return f"Dias para a próxima vacinação: {dias_faltando} dia(s)"
+    elif dias_faltando == 0:
+        return "A vacinação é hoje!"
+    else:
+        return "A data da vacinação já passou!"
         
 def main():
     while True:
@@ -311,6 +313,7 @@ def main():
             menu_animal()
         elif opcao == '2':
             visualizar_animais()
+            visualizar_tarefas()
         elif opcao == '3':
             editar_animal()
         elif opcao == '4':
