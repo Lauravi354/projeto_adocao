@@ -14,8 +14,9 @@ def mostrar_menu():
     print("4. Excluir Animal")
     print("5. Módulo de cuidados e atividades")
     print("6. Sugestões personalizadas") 
+    print("7. Sistema Match de Adoção")
     print("0. Sair e Salvar")
-    return input("Escolha uma opção (0-6): ")
+    return input("Escolha uma opção (0-7): ")
 
 def dados_err(dado):
     if not dado:
@@ -322,6 +323,8 @@ def main():
             menu_cuidados()
         elif opcao == '6':
             sugestoes()
+        elif opcao == '7':
+            match_adocao(animais)
         elif opcao == '0':
             with open(ANIMALS_FILE,"w",encoding="utf8") as file:
                 for animal in animais:
@@ -351,6 +354,70 @@ def main():
                 
         else:
             print("Opção inválida. Por favor, escolha uma opção de 0 a 5.")
+
+def match_adocao(animais):
+    print("\n--- SISTEMA DE MATCH DE ADOÇÃO ---")
+
+    if not animais:
+        print("Nenhum animal cadastrado para realizar o match.")
+        return
+
+    nome = input("Digite o nome do animal que deseja avaliar: ").strip()
+    animal = buscar_animal_por_nome(nome)
+
+    if animal is None:
+        print("Animal não encontrado.")
+        return
+
+    print(f"\nAnalisando compatibilidade para o animal: {animal['nome']}")
+
+    casa = input("Você mora em casa ou apartamento? ").strip().lower()
+    criancas = input("Você tem crianças pequenas em casa? (ex: sim ou nao) ").strip().lower()
+    outros_pets = input("Você já tem outros animais? (ex: sim ou nao) ").strip().lower()
+    estilo = input("Seu estilo de vida é calmo ou ativo? ").strip().lower()
+
+    pontos = 0
+
+    comportamento = animal["comportamento"].strip().lower()
+    if comportamento == "dócil" or comportamento == "docil" and criancas == "sim":
+        pontos += 40
+    if comportamento == "dócil" or comportamento == "docil" and criancas == "nao":
+        pontos += 30
+    if comportamento == "agitado" and estilo == "ativo":
+        pontos += 35
+    if comportamento == "agitado" and estilo == "calmo":
+        pontos += 20
+    if comportamento == "arisco" and criancas == "nao" and outros_pets == "nao":
+        pontos += 40
+    if comportamento == "arisco" and criancas == "sim" and outros_pets == "nao":
+        pontos += 10
+    if comportamento == "sociável" or comportamento == "sociavel"  and outros_pets == "sim":
+        pontos += 30
+
+    especie = animal["especie"].strip().lower()
+    if especie == "cachorro" and casa == "casa":
+        pontos += 30
+    if especie == "cachorro" and casa == "apartamento":
+        pontos += 20
+    if especie == "gato" and casa == "casa":
+        pontos += 30
+    if especie == "gato" and casa == "apartamento":
+        pontos += 20
+
+    pontos += 15
+
+    if pontos > 100:
+        pontos = 100
+
+    print("\n---RESULTADO DO MATCH---")
+    print(f"Compatibilidade entre você e {animal['nome']}: {pontos}%")
+
+    if pontos >= 80:
+        print("Alta compatibilidade! Excelente opção de adoção!")
+    elif pontos >= 50:
+        print("Compatibilidade moderada. Pode ser uma boa opção!")
+    else:
+        print("Baixa compatibilidade. Talvez outro animal combine melhor.")
 
 if __name__ == "__main__":
     main()
