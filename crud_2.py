@@ -1,5 +1,6 @@
 import ast
 import os
+from datetime import datetime
 
 animais=[]
 sugestao_personalizada = []
@@ -158,7 +159,7 @@ def cadastrar_cuidado():
     tarefas.append(nova_tarefa)
     print(f"\nTarefa '{descricao}' registrada para {animal_encontrado['nome']}.")
 
-def visualizar_tarefas():
+def visualizar_tarefas(dias_faltando):
     print("\n--- Visualizar Tarefas Pendentes ---")
     nome_alvo = input("Nome do animal para ver as tarefas: ")
     animal = buscar_animal_por_nome(nome_alvo) 
@@ -182,6 +183,17 @@ def visualizar_tarefas():
     for i, tarefa in enumerate(tarefas_pendentes, start=1):
         print(f" {i}. Tarefa: {tarefa['descricao']}")
         print(f" Previsto: {tarefa['data_prevista']}, Responsável: {tarefa['responsavel']}")
+        
+
+    if "vacina" in tarefa["descricao"].lower():
+        if dias_faltando is None:
+            print(" Data inválida para calcular vacinação.")
+        elif dias_faltando > 0:
+            print(f" Dias para a próxima vacinação: {dias_faltando} dia(s)")
+        elif dias_faltando == 0:
+            print(" A vacinação é hoje!")
+        else:
+            print(" A data da vacinação já passou!")
 
 def menu_cuidados():
     while True:
@@ -282,6 +294,15 @@ def excluir_animal():
     except ValueError:
         print("Entrada inválida. Por favor, digite um número.")
 
+def contagem_regressiva_alertas (dias_faltando):
+    hoje = datetime.now()
+    
+    for tarefa in tarefas:
+        if "vacina" in tarefa["descricao"].lower():
+            data_prevista = datetime.strptime(tarefa['data_prevista'], "%d/%m/%Y")
+            dias_faltando = (data_prevista - hoje).days
+            return f"Dias que faltam para a próxima vacina: {dias_faltando} dias"
+        
 def main():
     while True:
         opcao = mostrar_menu()
@@ -302,13 +323,13 @@ def main():
             with open(ANIMALS_FILE,"w",encoding="utf8") as file:
                 for animal in animais:
                     file.writelines(
-                        f"nome: {animal["nome"]} \n"
-                        f"especie: {animal["especie"]}\n"
-                        f"raca: {animal["raca"]}\n"
-                        f"idade: {animal["idade"]}\n"
-                        f"estado_saude: {animal["estado_saude"]}\n"
-                        f"data_chegada: {animal["data_chegada"]}\n"
-                        f"comportamento: {animal["comportamento"]}\n"
+                        f"nome: {animal['nome']} \n"
+                        f"especie: {animal['especie']}\n"
+                        f"raca: {animal['raca']}\n"
+                        f"idade: {animal['idade']}\n"
+                        f"estado_saude: {animal['estado_saude']}\n"
+                        f"data_chegada: {animal['data_chegada']}\n"
+                        f"comportamento: {animal['comportamento']}\n"
                         "\n"
                     )
                 file.write("TAREFAS E CUIDADOS: \n")
@@ -317,10 +338,10 @@ def main():
                 else:
                     for tarefa in tarefas:
                         file.writelines(
-                            f"animal_nome: {tarefa["animal_nome"]}\n"
-                            f"descricao: {tarefa["descricao"]}\n"
-                            f"data_prevista: {tarefa["data_prevista"]}\n"
-                            f"responsavel: {tarefa["responsavel"]}\n"
+                            f"animal_nome: {tarefa['animal_nome']}\n"
+                            f"descricao: {tarefa['descricao']}\n"
+                            f"data_prevista: {tarefa['data_prevista']}\n"
+                            f"responsavel: {tarefa['responsavel']}\n"
                         )
             print("fim programa")
             break
@@ -330,3 +351,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    
