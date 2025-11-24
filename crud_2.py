@@ -311,7 +311,7 @@ def main():
         if opcao == '1':
             menu_animal()
         elif opcao == '2':
-            visualizar_tarefas()
+            visualizar_animais()
         elif opcao == '3':
             editar_animal()
         elif opcao == '4':
@@ -414,6 +414,6 @@ def match_adocao(animais):
     else:
         print("Baixa compatibilidade. Talvez outro animal combine melhor com você!")
 
-if __name__ == "__main__":
-    main()
+
+main()
     
