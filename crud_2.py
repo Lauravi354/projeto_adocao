@@ -135,7 +135,7 @@ def visualizar_animais():
         print(f" Data de Chegada: {animal['data_chegada']}")
         print(f" Comportamento: {animal['comportamento']}")
         print("-" * 20)
-        
+
 def cadastrar_cuidado():
     print("\n--- Cadastrar Cuidado/Atividade ---")
     nome_alvo = input("Nome do animal para registrar a tarefa: ")
@@ -147,7 +147,17 @@ def cadastrar_cuidado():
 
     print(f"\nRegistrando tarefa para {animal_encontrado['nome']}") 
     descricao = input("Descrição da Tarefa: ")
-    data = input("Data Prevista (DD/MM/AAAA): ")
+    
+    while True:
+        data = input("Data Prevista (DD/MM/AAAA): ").strip()
+
+        apenas_numeros = data.replace("/", "")
+
+        if apenas_numeros.isdigit() and data.count("/") == 2:
+            break
+        else:
+            print("Erro: A data deve estar no formato DD/MM/AAAA e conter apenas números.")
+
     responsavel = input("Responsável pela Tarefa: ")
     nova_tarefa = {
         "animal_nome": animal_encontrado["nome"], 
