@@ -314,54 +314,6 @@ def contagem_regressiva_alertas (tarefa):
     else:
         return f"A data da atividade já passou ({dias_faltando} dias)!"
         
-def main():
-    while True:
-        opcao = mostrar_menu()
-        
-        if opcao == '1':
-            menu_animal()
-        elif opcao == '2':
-            visualizar_animais()
-        elif opcao == '3':
-            editar_animal()
-        elif opcao == '4':
-            excluir_animal()    
-        elif opcao == '5':
-            menu_cuidados()
-        elif opcao == '6':
-            sugestoes()
-        elif opcao == '7':
-            match_adocao(animais)
-        elif opcao == '0':
-            with open(ANIMALS_FILE,"w",encoding="utf8") as file:
-                for animal in animais:
-                    file.writelines(
-                        f"nome: {animal['nome']} \n"
-                        f"especie: {animal['especie']}\n"
-                        f"raca: {animal['raca']}\n"
-                        f"idade: {animal['idade']}\n"
-                        f"estado_saude: {animal['estado_saude']}\n"
-                        f"data_chegada: {animal['data_chegada']}\n"
-                        f"comportamento: {animal['comportamento']}\n"
-                        "\n"
-                    )
-                file.write("TAREFAS E CUIDADOS: \n")
-                if not tarefas:
-                    file.write("nenhuma tarefa registrada")
-                else:
-                    for tarefa in tarefas:
-                        file.writelines(
-                            f"animal_nome: {tarefa['animal_nome']}\n"
-                            f"descricao: {tarefa['descricao']}\n"
-                            f"data_prevista: {tarefa['data_prevista']}\n"
-                            f"responsavel: {tarefa['responsavel']}\n"
-                        )
-            print("fim programa")
-            break
-                
-        else:
-            print("Opção inválida. Por favor, escolha uma opção de 0 a 7.")
-
 def match_adocao(animais):
     print("\n--- SISTEMA DE MATCH DE ADOÇÃO ---")
 
@@ -423,6 +375,55 @@ def match_adocao(animais):
         print("Compatibilidade moderada. Pode ser uma boa opção!")
     else:
         print("Baixa compatibilidade. Talvez outro animal combine melhor com você!")
+        
+def main():
+    while True:
+        opcao = mostrar_menu()
+        
+        if opcao == '1':
+            menu_animal()
+        elif opcao == '2':
+            visualizar_animais()
+        elif opcao == '3':
+            editar_animal()
+        elif opcao == '4':
+            excluir_animal()    
+        elif opcao == '5':
+            menu_cuidados()
+        elif opcao == '6':
+            sugestoes()
+        elif opcao == '7':
+            match_adocao(animais)
+        elif opcao == '0':
+            with open(ANIMALS_FILE,"w",encoding="utf8") as file:
+                for animal in animais:
+                    file.writelines(
+                        f"nome: {animal['nome']} \n"
+                        f"especie: {animal['especie']}\n"
+                        f"raca: {animal['raca']}\n"
+                        f"idade: {animal['idade']}\n"
+                        f"estado_saude: {animal['estado_saude']}\n"
+                        f"data_chegada: {animal['data_chegada']}\n"
+                        f"comportamento: {animal['comportamento']}\n"
+                        "\n"
+                    )
+                file.write("TAREFAS E CUIDADOS: \n")
+                if not tarefas:
+                    file.write("nenhuma tarefa registrada")
+                else:
+                    for tarefa in tarefas:
+                        file.writelines(
+                            f"animal_nome: {tarefa['animal_nome']}\n"
+                            f"descricao: {tarefa['descricao']}\n"
+                            f"data_prevista: {tarefa['data_prevista']}\n"
+                            f"responsavel: {tarefa['responsavel']}\n"
+                        )
+            print("fim programa")
+            break
+                
+        else:
+            print("Opção inválida. Por favor, escolha uma opção de 0 a 7.")
+
 
 
 main()
