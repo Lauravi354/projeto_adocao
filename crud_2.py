@@ -376,9 +376,9 @@ def match_adocao(animais):
     pontos = 0
 
     comportamento = animal["comportamento"].strip().lower()
-    if comportamento == "dócil" or comportamento == "docil" and criancas == "sim":
+    if (comportamento == "dócil" or comportamento == "docil") and criancas == "sim":
         pontos += 40
-    if comportamento == "dócil" or comportamento == "docil" and criancas == "nao":
+    if (comportamento == "dócil" or comportamento == "docil") and criancas == "nao":
         pontos += 30
     if comportamento == "agitado" and estilo == "ativo":
         pontos += 35
