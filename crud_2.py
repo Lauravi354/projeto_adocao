@@ -185,8 +185,6 @@ def visualizar_tarefas():
         print(f" {i}. Tarefa: {tarefa['descricao']}")
         print(f" Previsto: {tarefa['data_prevista']}, Responsável: {tarefa['responsavel']}")
         
-
-    if "vacina" in tarefa["descricao"].lower():
         alerta = contagem_regressiva_alertas(tarefa)
         print(" ", alerta)
 
@@ -295,16 +293,16 @@ def contagem_regressiva_alertas (tarefa):
     try:
         data_prevista = datetime.strptime(tarefa['data_prevista'], "%d/%m/%Y")
     except:
-        return "Data inválida para calcular vacinação."
+        return "Data inválida para calcular a atividade."
 
     dias_faltando = (data_prevista - hoje).days
 
     if dias_faltando > 0:
-        return f"Dias para a próxima vacinação: {dias_faltando} dia(s)"
+        return f"Dias para a próxima atividade : {dias_faltando} dia(s)"
     elif dias_faltando == 0:
-        return "A vacinação é hoje!"
+        return f"A atividade é hoje!"
     else:
-        return "A data da vacinação já passou!"
+        return f"A data da atividade já passou ({dias_faltando} dias)!"
         
 def main():
     while True:
@@ -313,7 +311,6 @@ def main():
         if opcao == '1':
             menu_animal()
         elif opcao == '2':
-            visualizar_animais()
             visualizar_tarefas()
         elif opcao == '3':
             editar_animal()
@@ -353,7 +350,7 @@ def main():
             break
                 
         else:
-            print("Opção inválida. Por favor, escolha uma opção de 0 a 5.")
+            print("Opção inválida. Por favor, escolha uma opção de 0 a 7.")
 
 def match_adocao(animais):
     print("\n--- SISTEMA DE MATCH DE ADOÇÃO ---")
@@ -371,10 +368,10 @@ def match_adocao(animais):
 
     print(f"\nAnalisando compatibilidade para o animal: {animal['nome']}")
 
-    casa = input("Você mora em casa ou apartamento? ").strip().lower()
-    criancas = input("Você tem crianças pequenas em casa? (ex: sim ou nao) ").strip().lower()
-    outros_pets = input("Você já tem outros animais? (ex: sim ou nao) ").strip().lower()
-    estilo = input("Seu estilo de vida é calmo ou ativo? ").strip().lower()
+    moradia = input("Você mora em casa ou apartamento? \n").strip().lower()
+    criancas = input("Você tem crianças pequenas em casa? (ex: sim ou nao) \n").strip().lower()
+    outros_pets = input("Você já tem outros animais? (ex: sim ou nao) \n").strip().lower()
+    estilo = input("Seu estilo de vida é calmo ou ativo? \n").strip().lower()
 
     pontos = 0
 
@@ -391,17 +388,15 @@ def match_adocao(animais):
         pontos += 40
     if comportamento == "arisco" and criancas == "sim" and outros_pets == "nao":
         pontos += 10
-    if comportamento == "sociável" or comportamento == "sociavel"  and outros_pets == "sim":
-        pontos += 30
 
     especie = animal["especie"].strip().lower()
-    if especie == "cachorro" and casa == "casa":
+    if especie == "cachorro" and moradia == "casa":
         pontos += 30
-    if especie == "cachorro" and casa == "apartamento":
+    if especie == "cachorro" and moradia == "apartamento":
         pontos += 20
-    if especie == "gato" and casa == "casa":
+    if especie == "gato" and moradia == "casa":
         pontos += 30
-    if especie == "gato" and casa == "apartamento":
+    if especie == "gato" and moradia == "apartamento":
         pontos += 20
 
     pontos += 15
@@ -417,7 +412,7 @@ def match_adocao(animais):
     elif pontos >= 50:
         print("Compatibilidade moderada. Pode ser uma boa opção!")
     else:
-        print("Baixa compatibilidade. Talvez outro animal combine melhor.")
+        print("Baixa compatibilidade. Talvez outro animal combine melhor com você!")
 
 if __name__ == "__main__":
     main()
